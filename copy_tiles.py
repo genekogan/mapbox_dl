@@ -23,6 +23,9 @@ def main():
 	filesS = [f for f in listdir(in_path+"/map") if isfile(join(in_path+"/map", f)) and f != ".DS_Store" and 'map' in f]
 	filesM = [f for f in listdir(in_path+"/sat") if isfile(join(in_path+"/sat", f)) and f != ".DS_Store" and 'sat' in f]
 
+	filesC = [f for f in listdir(out_path) if isfile(join(out_path, f)) ]
+	nc = len(filesC)
+
 	for f in range(len(filesS)):
 		#	idx = int(filesS[f][3:8])
 			
@@ -48,7 +51,7 @@ def main():
 		imgC.paste(imgM, (0, 0))
 		imgC.paste(imgS, (w, 0))
 
-		destPath = '%s/%08d.png' % (out_path, f)
+		destPath = '%s/%08d.png' % (out_path, nc + f)
 		imgC.save(destPath)
 
 		#	imgS3 = imgS.resize((2048, 1024), Image.BICUBIC)
