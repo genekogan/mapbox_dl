@@ -2,6 +2,11 @@ from random import random
 import urllib
 import argparse
 import os
+import random
+from PIL import Image
+
+
+
 
 
 
@@ -12,6 +17,7 @@ parser.add_argument("--height", default=512, required=True, type=int, help="heig
 parser.add_argument("--zoom", default=17, required=True, type=int, help="zoom")
 parser.add_argument("--num_images", required=True, type=int, help="num images")
 parser.add_argument("--output_dir", required=True, type=str, help="where to save images")
+parser.add_argument("--augment", required=True, default=False, type=bool, help="rotate (augment) images?")
 args = parser.parse_args()
 
 style_map = 'genekogan/cj5uwgixd5y1m2roclrqc51fh'
@@ -30,10 +36,28 @@ def get_style(style, location, zoom, width, height):
 	
 
 def download_map_sat(dir_out, t, lat, lng, zoom, out_w, out_h):
-	url_map = get_style(style_map, (lat, lng), zoom, out_w, out_h)
-	url_sat = get_style(style_sat, (lat, lng), zoom, out_w, out_h)
-	urllib.urlretrieve(url_map, "%s/map/map%05d_%f,%f.png"%(dir_out, t,lat,lng))
-	urllib.urlretrieve(url_sat, "%s/sat/sat%05d_%f,%f.png"%(dir_out, t,lat,lng))
+	path_map = "%s/map/map%05d_%f,%f.png"%(dir_out, t,lat,lng)
+	path_sat = "%s/sat/sat%05d_%f,%f.png"%(dir_out, t,lat,lng)
+	
+	w, h = out_w, out_h
+	if args.augment:
+		w, h = 1.5*out_w, 1.5*out_h
+	
+	url_map = get_style(style_map, (lat, lng), zoom, w, h)
+	url_sat = get_style(style_sat, (lat, lng), zoom, w, h)
+	
+	urllib.urlretrieve(url_map, path_map)
+	urllib.urlretrieve(url_sat, path_sat)
+	
+	if args.augment:
+		img_map = Image.open(path_map)
+		img_sat = Image.open(path_sat)
+		x1, y1 = int((w-out_w)*0.5), int((h-out_h)*0.5)
+		ang = 360*random.random()
+		img_map = img_map.rotate(ang, resample=Image.BICUBIC, expand=False).crop((x1, y1, x1+out_w, y1+out_h))
+		img_map.save(path_map)
+		img_sat = img_sat.rotate(ang, resample=Image.BICUBIC, expand=False).crop((x1, y1, x1+out_w, y1+out_h))
+		img_sat.save(path_sat)
 
 
 def main():
@@ -49,9 +73,10 @@ def main():
 	for t in range(n):
 		if t % 10 == 0:
 			print("done %d of %d" % (t, n))
-		lng = lng_min + (lng_max-lng_min) * random()
-		lat = lat_min + (lat_max-lat_min) * random()
+		lng = lng_min + (lng_max-lng_min) * random.random()
+		lat = lat_min + (lat_max-lat_min) * random.random()
 		download_map_sat(output_dir, t, lat, lng, zoom, w, h)
+
 
 		
 main()
