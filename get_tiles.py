@@ -41,10 +41,10 @@ def download_map_sat(dir_out, t, lat, lng, zoom, out_w, out_h):
 	
 	w, h = out_w, out_h
 	if args.augment:
-		w, h = 1.5*out_w, 1.5*out_h
+		w, h = min(1280, 1.5*out_w), min(1280, 1.5*out_h)
 	
-	url_map = get_style(style_map, (lat, lng), zoom, w, h)
-	url_sat = get_style(style_sat, (lat, lng), zoom, w, h)
+	url_map = get_style(style_map, (lat, lng), zoom, int(w), int(h))
+	url_sat = get_style(style_sat, (lat, lng), zoom, int(w), int(h))
 	
 	urllib.urlretrieve(url_map, path_map)
 	urllib.urlretrieve(url_sat, path_sat)
@@ -52,11 +52,18 @@ def download_map_sat(dir_out, t, lat, lng, zoom, out_w, out_h):
 	if args.augment:
 		img_map = Image.open(path_map)
 		img_sat = Image.open(path_sat)
-		x1, y1 = int((w-out_w)*0.5), int((h-out_h)*0.5)
-		ang = 360*random.random()
-		img_map = img_map.rotate(ang, resample=Image.BICUBIC, expand=False).crop((x1, y1, x1+out_w, y1+out_h))
+		
+		ang = -19 + 38*random.random()
+		
+		img_map = img_map.rotate(ang, resample=Image.BICUBIC, expand=False)
+		img_sat = img_sat.rotate(ang, resample=Image.BICUBIC, expand=False)
+		
+		x1, y1 = int((img_map.width-out_w)*0.5), int((img_map.height-out_h)*0.5)
+		
+		img_map = img_map.crop((x1, y1, x1+out_w, y1+out_h))
+		img_sat = img_sat.crop((x1, y1, x1+out_w, y1+out_h))
+		
 		img_map.save(path_map)
-		img_sat = img_sat.rotate(ang, resample=Image.BICUBIC, expand=False).crop((x1, y1, x1+out_w, y1+out_h))
 		img_sat.save(path_sat)
 
 
