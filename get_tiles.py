@@ -2,7 +2,6 @@ from random import random
 import urllib
 import argparse
 import os
-#https://api.mapbox.com/styles/v1/%s/static/-73.995890,40.742779,18,0,0/1024x1024?access_token=pk.eyJ1IjoiZ2VuZWtvZ2FuIiwiYSI6ImNqNXVhNmoweDFtb3Uyd3A5eG1kZGgyNXAifQ.ZrcGknrlozbxPxUN8AF3FA
 
 
 
