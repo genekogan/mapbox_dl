@@ -62,7 +62,17 @@ def download_map_sat(dir_out, t, lat, lng, zoom, out_w, out_h):
 		
 		img_map = img_map.crop((x1, y1, x1+out_w, y1+out_h))
 		img_sat = img_sat.crop((x1, y1, x1+out_w, y1+out_h))
-		
+
+		flipv = random.random() < 0.25
+		fliph = random.random() < 0.25
+
+		if flipv:
+			img_map = img_map.transpose(Image.FLIP_TOP_BOTTOM)
+			img_sat = img_sat.transpose(Image.FLIP_TOP_BOTTOM)
+		if fliph:
+			img_map = img_map.transpose(Image.FLIP_LEFT_RIGHT)
+			img_sat = img_sat.transpose(Image.FLIP_LEFT_RIGHT)
+
 		img_map.save(path_map)
 		img_sat.save(path_sat)
 
