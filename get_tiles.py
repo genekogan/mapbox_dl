@@ -88,8 +88,3 @@ if __name__ == '__main__':
 	parser.add_argument("--lng_max", required=True, type=float, help="Max longitude")
 	args = parser.parse_args()
 	main()
-	# style_map = 'genekogan/cj5uwgixd5y1m2roclrqc51fh'
-	# style_sat = 'mapbox/satellite-v9'
-
-	# lng_min, lat_min = 40.563883, -74.004503
-	# lng_max, lat_max = 40.895277, -73.732700
