@@ -10,7 +10,7 @@ def get_style(style, location, zoom, width, height):
 	Get the Mabpox style url
 	'''
 	lng, lat = location
-	url = 'https://api.mapbox.com/styles/v1/%s/static/%f,%f,%d,0,0/%dx%d?access_token=%s'%(style, lng, lat, zoom, width, height, args.key)
+	url = 'https://api.mapbox.com/styles/v1/%s/static/%f,%f,%d,0,0/%dx%d?access_token=%s'%(style, lat, lng, zoom, width, height, args.key)
 	return url
 	
 def download_map_sat(dir_out, t, lat, lng, zoom, out_w, out_h):
