@@ -68,7 +68,7 @@ def main():
 	for t in range(n):
 		lng = args.lng_min + (args.lng_max - args.lng_min) * random.random()
 		lat = args.lat_min + (args.lat_max - args.lat_min) * random.random()
-		print('Getting map image%s, %s, %s. (%s/%s)' % (lat, lng, zoom, t, n))
+		print('Getting map image %s, %s, %s. (%s/%s)' % (lat, lng, zoom, t, n))
 		download_map_sat(output_dir, t, lat, lng, zoom, w, h)
 
 if __name__ == '__main__':
