@@ -14,8 +14,13 @@ python get_tiles.py \
   --style_map USERNAME/MAP_ID
 ```
 
-## To combine them into single images
+## Post-processing
 
 ```sh
-python copy_tiles.py --in_path results/nyc_512
+python post_processing.py --in_path results/nyc_512 --combine 0 --w 1024 --h 512 --frac 0.75 --label_map 1
 ```
+
+`--combine` : to concatenate into single image (pix2pix) or separate directories
+`--w` and `--h` : output width and height, center-cropped from originals
+`--frac` : zooming factor to crop smaller subset of image (1.0 = use whole image)
+`--label_map` : output label map which is 1-channels denoting index of class, otherwise use original label colors
