@@ -28,7 +28,7 @@ def download_map_sat(dir_out, t, lat, lng, zoom, out_w, out_h):
 	urllib.urlretrieve(url_map, path_map)
 	urllib.urlretrieve(url_sat, path_sat)
 	
-	if args.augment:
+	if args.augment==1:
 		img_map = Image.open(path_map)
 		img_sat = Image.open(path_sat)
 		
@@ -79,7 +79,7 @@ if __name__ == '__main__':
 	parser.add_argument("--zoom", default=17, required=True, type=int, help="zoom")
 	parser.add_argument("--num_images", required=True, type=int, help="num images")
 	parser.add_argument("--output_dir", required=True, type=str, help="where to save images")
-	parser.add_argument("--augment", required=True, default=False, type=bool, help="rotate (augment) images?")
+	parser.add_argument("--augment", required=True, default=0, type=int, help="rotate (augment) images?")
 	parser.add_argument("--style_map", required=True, type=str, help="Mapbox style to use. Format should be: user/mapID")
 	parser.add_argument("--style_sat", required=False, type=str, default='mapbox/satellite-v9', help="Satellite style to use")
 	parser.add_argument("--lat_min", required=True, type=float, help="Min latitude")
